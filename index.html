@@ -3,194 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>H1CL 科技课题闪卡</title>
+    <title>H1CL 科技课题全屏闪卡</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
         
-        body {
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0f172a;
             font-family: 'Noto Sans SC', sans-serif;
-            background-color: #f0f2f5;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            overflow: hidden; /* 禁止全身滚动 */
-            height: 100vh;
-            width: 100vw;
         }
 
-        .app-container {
+        .full-screen-app {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card-container {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            perspective: 1000px;
+            touch-action: none;
+        }
+
+        .card-inner {
+            width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* 闪卡容器 */
-        .card-wrapper {
-            width: 100%;
-            max-width: 380px;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        /* 卡片主体 */
-        .card-inner {
-            flex-grow: 1;
-            height: 460px;
-            border-radius: 2.5rem;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border: 4px solid white;
+            transition: transform 0.3s cubic-bezier(0.15, 0.85, 0.35, 1);
             position: relative;
             z-index: 10;
-            overflow: hidden;
         }
 
-        /* 侧边按钮 */
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(8px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border: 1px solid white;
-            color: #475569;
-            transition: all 0.2s;
+        /* 科技版主题配色 */
+        .theme-支付 { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+        .theme-支付 .text-primary { color: #0369a1; }
+        .theme-支付 .accent-bg { background: #0ea5e9; color: white; }
+
+        .theme-学习 { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); }
+        .theme-学习 .text-primary { color: #6d28d9; }
+        .theme-学习 .accent-bg { background: #8b5cf6; color: white; }
+
+        .theme-休闲 { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+        .theme-休闲 .text-primary { color: #15803d; }
+        .theme-休闲 .accent-bg { background: #22c55e; color: white; }
+
+        .back-style { background: #ffffff !important; }
+
+        .main-word {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.2;
+            word-break: break-all;
+            padding: 0 25px;
         }
 
-        .nav-btn:active {
-            transform: translateY(-50%) scale(0.9);
-            background: #fff;
-        }
-
-        .btn-left { left: -15px; }
-        .btn-right { right: -15px; }
-
-        /* 颜色主题 */
-        .theme-支付 { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
-        .theme-支付 .word-color { color: #0369a1; }
-        .theme-支付 .tag-bg { background: #0ea5e9; color: white; }
-        
-        .theme-学习 { background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); }
-        .theme-学习 .word-color { color: #7e22ce; }
-        .theme-学习 .tag-bg { background: #a855f7; color: white; }
-        
-        .theme-休闲 { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); }
-        .theme-休闲 .word-color { color: #15803d; }
-        .theme-休闲 .tag-bg { background: #22c55e; color: white; }
-
-        .hidden { display: none; }
-        .back-style { background: white !important; }
-
-        /* 语音按钮样式 */
-        .voice-btn-circle {
-            width: 54px;
-            height: 54px;
+        .voice-trigger {
+            width: 70px;
+            height: 70px;
             background: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.1s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
         }
-        .voice-btn-circle:active { transform: scale(0.9); }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        .nav-hint {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0, 0, 0, 0.05);
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 5;
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- Header -->
-    <header class="text-center mb-6">
-        <h1 class="text-xl font-black text-slate-800 tracking-tighter">H1CL 科技词汇</h1>
-        <div class="mt-2 text-[10px] font-bold text-slate-400 bg-white px-4 py-1 rounded-full shadow-sm inline-block uppercase tracking-widest">
-            Progress: <span id="progress-info">1 / 24</span>
-        </div>
-    </header>
+<div class="full-screen-app" id="touch-area">
+    <div class="card-container">
+        <div class="nav-hint left-4">❮</div>
+        <div class="nav-hint right-4">❯</div>
 
-    <!-- 卡片交互区 -->
-    <div class="card-wrapper">
-        <!-- 左按钮 -->
-        <button onclick="prev()" class="nav-btn btn-left">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
+        <div id="main-card" class="card-inner theme-支付" onclick="toggleCard()">
+            <div class="pt-12 text-center pb-4">
+                <h1 class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Tech & Media</h1>
+                <h2 class="text-slate-800 text-lg font-black tracking-tight">科技与媒体课题</h2>
+                <div class="mt-2 inline-block bg-slate-200/50 px-3 py-0.5 rounded-full">
+                    <span id="progress-info" class="text-slate-600 font-bold text-[10px]">1 / 28</span>
+                </div>
+            </div>
 
-        <!-- 卡片 -->
-        <div id="main-card" class="card-inner theme-支付 p-8" onclick="toggleCard()">
-            <!-- 正面内容 -->
-            <div id="front-view" class="h-full flex flex-col items-center justify-between">
-                <span id="tag-label" class="tag-bg text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">电子支付</span>
-                
-                <h2 id="word-front" class="word-color text-5xl font-black text-center leading-tight tracking-tighter">二维码</h2>
+            <div id="front-view" class="flex-1 flex flex-col items-center justify-around pb-12">
+                <div class="flex-1 flex items-center justify-center">
+                    <h2 id="word-front" class="main-word text-primary text-center tracking-tighter">二维码</h2>
+                </div>
                 
                 <div class="flex flex-col items-center">
-                    <!-- 语音播报图标 -->
-                    <button onclick="event.stopPropagation(); speak();" class="voice-btn-circle mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 word-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <span id="tag-label" class="accent-bg text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-8">电子支付</span>
+                    <button onclick="event.stopPropagation(); speak();" class="voice-trigger active:scale-90 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                         </svg>
                     </button>
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">点击中心翻转解释</p>
+                    <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Swipe to Switch / Tap to Flip</p>
                 </div>
             </div>
 
-            <!-- 反面内容 -->
-            <div id="back-view" class="hidden h-full flex flex-col">
-                <div class="border-b-2 border-slate-100 pb-4 mb-6">
-                    <h3 id="word-back" class="text-3xl font-black text-slate-800">二维码</h3>
-                    <p id="pinyin-text" class="text-lg font-bold text-blue-500 italic mt-1">èr wéi mǎ</p>
+            <div id="back-view" class="hidden flex-1 flex flex-col p-8 pt-4">
+                <div class="border-b-4 border-slate-50 pb-6 mb-8">
+                    <h3 id="word-back" class="text-4xl font-black text-slate-800 tracking-tighter">二维码</h3>
+                    <p id="pinyin-text" class="text-2xl font-bold text-blue-500 italic mt-2">èr wéi mǎ</p>
                 </div>
                 
-                <div class="space-y-6 flex-grow overflow-y-auto pr-2 no-scrollbar">
-                    <div>
-                        <span class="block text-[9px] font-black text-slate-300 uppercase tracking-widest mb-2">释义 Meaning</span>
-                        <div class="bg-slate-50 p-4 rounded-2xl text-slate-700 font-medium leading-relaxed border border-slate-100">
-                            <p id="meaning-text">QR Code</p>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="block text-[9px] font-black text-slate-300 uppercase tracking-widest mb-2">搭配 Collocation</span>
-                        <p id="usage-text" class="text-slate-800 font-bold text-lg leading-snug">通过手机<span class="text-blue-500 underline underline-offset-4">扫描二维码</span>付款。</p>
-                    </div>
+                <div class="space-y-10 flex-grow overflow-y-auto no-scrollbar">
+                    <section>
+                        <span class="block text-[10px] font-black text-slate-300 uppercase tracking-widest mb-3">释义 Meaning</span>
+                        <p id="meaning-text" class="text-xl text-slate-700 font-medium leading-relaxed bg-slate-50 p-6 rounded-3xl border border-slate-100">QR Code</p>
+                    </section>
+                    <section>
+                        <span class="block text-[10px] font-black text-slate-300 uppercase tracking-widest mb-3">搭配 Collocation</span>
+                        <p id="usage-text" class="text-slate-800 font-bold text-2xl leading-snug"></p>
+                    </section>
                 </div>
                 
-                <p class="text-center text-slate-300 text-[9px] font-bold uppercase tracking-widest mt-4">点击回到正面</p>
+                <div class="mt-8 text-center">
+                    <span class="text-slate-300 text-[10px] font-bold uppercase tracking-widest">Tap to back</span>
+                </div>
             </div>
         </div>
-
-        <!-- 右按钮 -->
-        <button onclick="next()" class="nav-btn btn-right">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
-            </svg>
-        </button>
     </div>
-
-    <!-- Footer -->
-    <footer class="mt-8">
-        <p class="text-[9px] text-slate-300 font-bold uppercase tracking-[0.2em] text-center">
-            点击卡片翻转 · 两侧箭头切换
-        </p>
-    </footer>
 </div>
 
 <script>
     const cards = [
+        // 支付类
         { category: "支付", word: "二维码", pinyin: "èr wéi mǎ", desc: "QR Code", coll: "通过手机扫描二维码付款。" },
         { category: "支付", word: "线上付款", pinyin: "xiàn shàng fù kuǎn", desc: "Online payment", coll: "线上付款省时省力。" },
         { category: "支付", word: "电子钱包", pinyin: "diàn zǐ qián bǎo", desc: "E-wallet", coll: "往电子钱包里充值。" },
@@ -199,6 +161,7 @@
         { category: "支付", word: "网络购物", pinyin: "wǎng luò gòu wù", desc: "Online shopping", coll: "网络购物选择丰富。" },
         { category: "支付", word: "外卖服务", pinyin: "wài mài fú wù", desc: "Food delivery service", coll: "手机订购外卖服务。" },
         { category: "支付", word: "扫描", pinyin: "sǎo miáo", desc: "Scan", coll: "扫描条形码识别。" },
+        // 学习类
         { category: "学习", word: "人工智能", pinyin: "rén gōng zhì néng", desc: "AI", coll: "利用人工智能辅助学习。" },
         { category: "学习", word: "网络视讯", pinyin: "wǎng luò shì xùn", desc: "Video call", coll: "网络视讯进行远程教学。" },
         { category: "学习", word: "居家学习", pinyin: "jū jiā xué xí", desc: "HBL", coll: "适应居家学习新常态。" },
@@ -207,9 +170,14 @@
         { category: "学习", word: "电子教材", pinyin: "diàn zǐ jiào cái", desc: "E-textbook", coll: "使用电子教材减轻书包。" },
         { category: "学习", word: "学习应用", pinyin: "xué xí yìng yòng", desc: "Educational app", coll: "下载趣味的学习应用。" },
         { category: "学习", word: "浏览", pinyin: "liú lǎn", desc: "To browse", coll: "在网上浏览相关课外知识。" },
+        // 休闲娱乐类
         { category: "休闲", word: "流媒体平台", pinyin: "liú méi tǐ píng tái", desc: "Streaming platforms", coll: "在流媒体平台看影集。" },
         { category: "休闲", word: "电子书", pinyin: "diàn zǐ shū", desc: "E-book", coll: "阅读电子书。" },
         { category: "休闲", word: "社交媒体", pinyin: "shè jiāo méi tǐ", desc: "Social media", coll: "在社交媒体上分享生活。" },
+        { category: "休闲", word: "网红", pinyin: "wǎng hóng", desc: "Internet celebrity / Influencer", coll: "很多网红通过直播推荐产品。" },
+        { category: "休闲", word: "贴文", pinyin: "tiē wén", desc: "Social media post", coll: "他每天都在朋友圈发贴文。" },
+        { category: "休闲", word: "分享", pinyin: "fēn xiǎng", desc: "To share", coll: "在网上分享自己的旅行经历。" },
+        { category: "休闲", word: "转发", pinyin: "zhuǎn fā", desc: "To forward / Repost", coll: "这篇文章很有意义，值得转发。" },
         { category: "休闲", word: "智能电器", pinyin: "zhì néng diàn qì", desc: "Smart appliances", coll: "安装智能电器打造智慧生活。" },
         { category: "休闲", word: "智能手表", pinyin: "zhì néng shǒu biǎo", desc: "Smartwatch", coll: "佩戴智能手表记录健康。" },
         { category: "休闲", word: "测量心率", pinyin: "cè liáng xīn lǜ", desc: "Measure heart rate", coll: "实时测量心率。" },
@@ -219,59 +187,72 @@
 
     let current = 0;
     let isBack = false;
+    let startX = 0;
+    let startY = 0;
+
+    const mainCard = document.getElementById('main-card');
+    const touchArea = document.getElementById('touch-area');
 
     function update() {
         const item = cards[current];
-        const cardNode = document.getElementById('main-card');
-        
         document.getElementById('word-front').innerText = item.word;
-        document.getElementById('tag-label').innerText = item.category === '支付' ? '电子支付' : (item.category === '学习' ? '教育学习' : '娱乐休闲');
-        
         document.getElementById('word-back').innerText = item.word;
         document.getElementById('pinyin-text').innerText = item.pinyin;
         document.getElementById('meaning-text').innerText = item.desc;
-        document.getElementById('usage-text').innerHTML = item.coll.replace(item.word, `<span class="text-blue-500 underline underline-offset-4">${item.word}</span>`);
-        
+        document.getElementById('usage-text').innerHTML = item.coll.replace(item.word, `<span class="text-blue-500 border-b-2 border-blue-200">${item.word}</span>`);
+        document.getElementById('tag-label').innerText = item.category === '支付' ? '电子支付' : (item.category === '学习' ? '教育学习' : '社交娱乐');
         document.getElementById('progress-info').innerText = `${current + 1} / ${cards.length}`;
         
         isBack = false;
-        cardNode.className = `card-inner theme-${item.category} p-8`;
         document.getElementById('front-view').classList.remove('hidden');
         document.getElementById('back-view').classList.add('hidden');
+        mainCard.className = `card-inner theme-${item.category}`;
+        mainCard.style.transform = 'translateX(0)';
     }
 
     function toggleCard() {
         isBack = !isBack;
-        const cardNode = document.getElementById('main-card');
         if (isBack) {
-            cardNode.classList.add('back-style');
+            mainCard.classList.add('back-style');
             document.getElementById('front-view').classList.add('hidden');
             document.getElementById('back-view').classList.remove('hidden');
         } else {
-            cardNode.classList.remove('back-style');
+            mainCard.classList.remove('back-style');
             document.getElementById('front-view').classList.remove('hidden');
             document.getElementById('back-view').classList.add('hidden');
         }
     }
 
-    function next() {
-        event.stopPropagation();
-        if (current < cards.length - 1) { current++; update(); }
-    }
-
-    function prev() {
-        event.stopPropagation();
-        if (current > 0) { current--; update(); }
-    }
-
+    function next() { if (current < cards.length - 1) { current++; update(); } }
+    function prev() { if (current > 0) { current--; update(); } }
     function speak() {
         const msg = new SpeechSynthesisUtterance(cards[current].word);
         msg.lang = 'zh-CN';
         window.speechSynthesis.speak(msg);
     }
 
+    touchArea.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, false);
+
+    touchArea.addEventListener('touchmove', (e) => {
+        const moveX = e.touches[0].clientX - startX;
+        const moveY = e.touches[0].clientY - startY;
+        if (Math.abs(moveX) > Math.abs(moveY)) {
+            mainCard.style.transform = `translateX(${moveX * 0.8}px) rotate(${moveX * 0.02}deg)`;
+        }
+    }, false);
+
+    touchArea.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        if (diff > 100) { next(); } 
+        else if (diff < -100) { prev(); } 
+        else { mainCard.style.transform = 'translateX(0)'; }
+    }, false);
+
     update();
 </script>
-
 </body>
 </html>
