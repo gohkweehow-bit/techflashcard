@@ -101,30 +101,34 @@
         <div class="nav-hint right-4">❯</div>
 
         <div id="main-card" class="card-inner theme-支付" onclick="toggleCard()">
+            <!-- 卡片页眉 -->
             <div class="pt-12 text-center pb-4">
                 <h1 class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Tech & Media</h1>
                 <h2 class="text-slate-800 text-lg font-black tracking-tight">科技与媒体课题</h2>
-                <div class="mt-2 inline-block bg-slate-200/50 px-3 py-0.5 rounded-full">
+                <!-- 将操作指示语移至此处 -->
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 mb-2">Swipe to Switch / Tap to Flip</p>
+                <div class="inline-block bg-slate-200/50 px-3 py-0.5 rounded-full">
                     <span id="progress-info" class="text-slate-600 font-bold text-[10px]">1 / 28</span>
                 </div>
             </div>
 
+            <!-- 正面 -->
             <div id="front-view" class="flex-1 flex flex-col items-center justify-around pb-12">
                 <div class="flex-1 flex items-center justify-center">
                     <h2 id="word-front" class="main-word text-primary text-center tracking-tighter">二维码</h2>
                 </div>
                 
                 <div class="flex flex-col items-center">
-                    <span id="tag-label" class="accent-bg text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-8">电子支付</span>
+                    <span id="tag-label" class="accent-bg text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-12">电子支付</span>
                     <button onclick="event.stopPropagation(); speak();" class="voice-trigger active:scale-90 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                         </svg>
                     </button>
-                    <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Swipe to Switch / Tap to Flip</p>
                 </div>
             </div>
 
+            <!-- 反面 -->
             <div id="back-view" class="hidden flex-1 flex flex-col p-8 pt-4">
                 <div class="border-b-4 border-slate-50 pb-6 mb-8">
                     <h3 id="word-back" class="text-4xl font-black text-slate-800 tracking-tighter">二维码</h3>
