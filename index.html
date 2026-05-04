@@ -3,59 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>H1CL 小贩中心进阶词汇</title>
+    <title>H1CL 科技改变生活闪卡</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0f172a; font-family: 'Noto Sans SC', sans-serif; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #020617; font-family: 'Noto Sans SC', sans-serif; }
         .app-container { width: 100vw; height: 100vh; display: flex; flex-direction: column; position: relative; }
-        .card-inner { width: 100%; height: 100%; display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); }
+        .card-inner { width: 100%; height: 100%; display: flex; flex-direction: column; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        
+        /* 颜色主题 */
+        .theme-payment { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); } /* 电子支付 - 蓝 */
+        .theme-leisure { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); } /* 娱乐与休闲 - 绿 */
+        .theme-education { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); } /* 教育与学习 - 紫 */
+
         .card-back-mode { background: #ffffff !important; }
-        .word-display { font-size: clamp(2.5rem, 12vw, 4.5rem); font-weight: 900; color: #92400e; text-align: center; line-height: 1.2; padding: 0 1.5rem; }
-        .voice-btn { width: 64px; height: 64px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(180, 83, 9, 0.15); transition: transform 0.2s; }
-        .voice-btn:active { transform: scale(0.9); }
+        .word-display { font-size: clamp(2.5rem, 10vw, 4rem); font-weight: 900; text-align: center; line-height: 1.2; padding: 0 1.5rem; }
+        
+        /* 动态文字颜色 */
+        .text-payment { color: #0369a1; }
+        .text-leisure { color: #15803d; }
+        .text-education { color: #6d28d9; }
+
+        .voice-btn { width: 64px; height: 64px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: transform 0.2s; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 <div class="app-container" id="app">
-    <div id="card" class="card-inner shadow-xl" onclick="flip()">
+    <div id="card" class="card-inner shadow-xl theme-payment" onclick="flip()">
         <!-- 顶部区域 -->
         <div class="pt-8 text-center">
-            <span class="text-[10px] font-black text-amber-600/60 tracking-[0.4em] uppercase">H1CL 必学词语</span>
-            <h1 class="text-xl font-black text-amber-900 mt-1">小贩中心</h1>
+            <span id="category-label" class="text-[10px] font-black text-slate-400 tracking-[0.4em] uppercase">科技与生活</span>
+            <h1 class="text-xl font-black text-slate-800 mt-1">智慧时代</h1>
             
-            <!-- 英文操作提示移至此处 -->
             <div class="mt-2">
-                <span class="text-[10px] font-bold text-amber-700/50 bg-amber-200/30 px-3 py-1 rounded-full uppercase tracking-widest">Tap or Space to flip</span>
+                <span class="text-[10px] font-bold text-slate-400 bg-white/50 px-3 py-1 rounded-full uppercase tracking-widest border border-slate-100">Tap or Space to flip</span>
             </div>
 
-            <div class="mt-4 inline-flex bg-amber-200/50 px-4 py-1 rounded-full border border-amber-300/30">
-                <span id="counter" class="text-amber-800 font-bold text-xs">1 / 20</span>
+            <div class="mt-4 inline-flex bg-white/60 px-4 py-1 rounded-full border border-white/30 shadow-sm">
+                <span id="counter" class="text-slate-600 font-bold text-xs">1 / 28</span>
             </div>
         </div>
 
         <!-- 正面 -->
         <div id="front" class="flex-1 flex flex-col items-center justify-center pb-20">
-            <button onclick="event.stopPropagation(); playVoice();" class="voice-btn mb-12">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+            <button id="v-btn" onclick="event.stopPropagation(); playVoice();" class="voice-btn mb-12">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
             </button>
-            <div id="word-front" class="word-display">古早味</div>
+            <div id="word-front" class="word-display text-payment">二维码</div>
         </div>
 
         <!-- 反面 -->
         <div id="back" class="hidden flex-1 flex flex-col px-8 py-6 overflow-hidden">
-            <div class="border-b-4 border-amber-50 pb-4 mb-6 text-center">
-                <h2 id="word-back" class="text-3xl font-black text-slate-800">古早味</h2>
-                <p id="pinyin" class="text-xl font-bold text-amber-600 italic mt-1">gǔ zǎo wèi</p>
+            <div class="border-b-4 border-slate-50 pb-4 mb-6 text-center">
+                <h2 id="word-back" class="text-3xl font-black text-slate-800">二维码</h2>
+                <p id="pinyin" class="text-xl font-bold text-blue-600 italic mt-1">èr wéi mǎ</p>
             </div>
             <div class="flex-1 overflow-y-auto no-scrollbar space-y-6 pb-10">
                 <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">词义解释 Meaning</label>
-                    <p id="meaning" class="text-lg text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100 italic">Nostalgic / Traditional taste</p>
+                    <label class="text-[10px] font-black text-slate-300 uppercase tracking-widest block mb-2">词义解释 Meaning</label>
+                    <p id="meaning" class="text-lg text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-100 italic"></p>
                 </div>
                 <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">词语搭配 Collocation</label>
+                    <label class="text-[10px] font-black text-slate-300 uppercase tracking-widest block mb-2">生活应用 Usage</label>
                     <p id="collocation" class="text-xl font-bold text-slate-800 leading-snug"></p>
                 </div>
             </div>
@@ -64,48 +74,75 @@
 
         <!-- 底部滑动提示 -->
         <div class="absolute bottom-6 w-full text-center">
-             <p class="text-[9px] text-amber-900/40 font-bold uppercase tracking-[0.2em]">左右滑动切换词条</p>
+             <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">左右滑动切换词条</p>
         </div>
     </div>
 </div>
 <script>
     const data = [
-        { w: "古早味", p: "gǔ zǎo wèi", m: "Nostalgic / Traditional taste", c: "这里的排骨面保留了最纯正的古早味。" },
-        { w: "经济实惠", p: "jīng jì shí huì", m: "Economical and practical", c: "小贩中心的食物经济实惠，深受上班族欢迎。" },
-        { w: "阶层", p: "jiē céng", m: "Social stratum / Class", c: "无论来自哪个社会阶层，大家都在这里用餐。" },
-        { w: "价廉物美", p: "jià lián wù měi", m: "Cheap and good quality", c: "新加坡的小贩美食一向以价廉物美著称。" },
-        { w: "传统风味", p: "chuán tǒng fēng wèi", m: "Traditional flavor", c: "许多老摊位依然坚持传统的制作工艺和传统风味。" },
-        { w: "气氛热闹", p: "qì fēn rè nao", m: "Lively atmosphere", c: "每到周末，小贩中心总是气氛热闹，座无虚席。" },
-        { w: "海南鸡饭", p: "hǎi nán jī fàn", m: "Hainanese Chicken Rice", c: "海南鸡饭是新加坡最著名的国菜之一。" },
-        { w: "印度煎饼", p: "yìn dù jiān bǐng", m: "Roti Prata", c: "印度煎饼配上浓郁的咖喱，风味独特。" },
-        { w: "椰浆饭", p: "yē jiāng fàn", m: "Nasi Lemak", c: "充满椰香的椰浆饭是许多人早餐的首选。" },
-        { w: "双薪家庭", p: "shuāng xīn jiā tíng", m: "Dual-income family", c: "对于忙碌的双薪家庭来说，在小贩中心解决三餐非常方便。" },
-        { w: "社会饭厅", p: "shè huì fàn tīng", m: "Social dining room", c: "小贩中心不仅是吃饭的地方，更是国人的社会饭厅。" },
-        { w: "集体记忆", p: "jí tǐ jì yì", m: "Collective memory", c: "这些地道的美食承载了几代新加坡人的集体记忆。" },
-        { w: "归属感", p: "guī shǔ gǎn", m: "Sense of belonging", c: "熟悉的味道让国人对这片土地产生强烈的归属感。" },
-        { w: "开销", p: "kāi xiāo", m: "Expenses / Spending", c: "在小贩中心用餐能节省不少生活开销。" },
-        { w: "拉茶", p: "lā chá", m: "Teh Tarik", c: "饭后喝一杯香浓的拉茶是很多国人的习惯。" },
-        { w: "鸡排饭", p: "jī pái fàn", m: "Chicken Cutlet Rice", c: "这家摊位的鸡排饭炸得金黄酥脆，非常诱人。" },
-        { w: "福建虾面", p: "fú jiàn xiā miàn", m: "Hokkien Prawn Mee", c: "福建虾面的汤头鲜美，是我的最爱。" },
-        { w: "拼桌", p: "pīn zhuō", m: "Share a table", c: "繁忙时段，大家通常会很有默契地与陌生人拼桌。" },
-        { w: "社交", p: "shè jiāo", m: "Social interaction", c: "小贩中心是邻里间进行日常社交的重要场所。" },
-        { w: "交流", p: "jiāo liú", m: "Communication / Exchange", c: "用餐时间是家人朋友间增进情感、进行交流的好机会。" }
+        // 电子支付 (Payment) - 蓝色系
+        { w: "二维码", p: "èr wéi mǎ", m: "QR Code", c: "扫描二维码就能快速获取信息。", t: "payment" },
+        { w: "扫描", p: "sǎo miáo", m: "Scan", c: "进入商场前需要扫描码进行登记。", t: "payment" },
+        { w: "线上付款", p: "xiàn shàng fù kuǎn", m: "Online payment", c: "线上付款既方便又快捷，深受年轻人喜爱。", t: "payment" },
+        { w: "电子钱包", p: "diàn zǐ qián bāo", m: "E-wallet", c: "手机里的电子钱包已经取代了厚重的钱包。", t: "payment" },
+        { w: "支付应用", p: "zhī fù yìng yòng", m: "Payment app", c: "常见的支付应用包括PayNow和GrabPay。", t: "payment" },
+        { w: "无现金支付", p: "wú xiàn jīn zhī fù", m: "Cashless payment", c: "无现金支付已成为新加坡社会的常态。", t: "payment" },
+        { w: "网络购物", p: "wǎng luò gòu wù", m: "Online shopping", c: "网络购物让我们足不出户就能买到全球商品。", t: "payment" },
+        { w: "外卖服务", p: "wài mài fú wù", m: "Food delivery service", c: "下雨天不想出门，可以叫外卖服务。", t: "payment" },
+        
+        // 娱乐与休闲 (Leisure) - 绿色系
+        { w: "社交媒体", p: "shè jiāo méi tǐ", m: "Social media", c: "社交媒体是人们分享生活点滴的平台。", t: "leisure" },
+        { w: "网红", p: "wǎng hóng", m: "Internet celebrity", c: "这位网红在网络上拥有数百万粉丝。", t: "leisure" },
+        { w: "贴文", p: "tiē wén", m: "Post (online)", c: "他在社交媒体上发布了一篇新贴文。", t: "leisure" },
+        { w: "分享", p: "fēn xiǎng", m: "Share", c: "好东西要记得和朋友一起分享。", t: "leisure" },
+        { w: "转发", p: "zhuǎn fā", m: "Forward / Repost", c: "这篇文章很有意义，值得转发给更多人。", t: "leisure" },
+        { w: "流媒体平台", p: "liú méi tǐ píng tái", m: "Streaming platform", c: "我们可以在流媒体平台上观看各种电影。", t: "leisure" },
+        { w: "电子书", p: "diàn zǐ shū", m: "E-book", c: "我在睡前喜欢阅读电子书来放松心情。", t: "leisure" }, // 已移至娱乐类
+        { w: "智能手表", p: "zhì néng shǒu biǎo", m: "Smart watch", c: "智能手表可以记录我们每天走的步数。", t: "leisure" },
+        { w: "测量心率", p: "cè liáng xīn lǜ", m: "Measure heart rate", c: "这款设备可以精准地测量心率。", t: "leisure" },
+        { w: "智能电器", p: "zhì néng diàn qì", m: "Smart appliances", c: "智能电器让家居生活变得更加自动化。", t: "leisure" },
+        { w: "人工智能", p: "rén gōng zhì néng", m: "Artificial Intelligence", c: "人工智能正在改变我们的生活和娱乐方式。", t: "leisure" },
+        { w: "实体店", p: "shí tǐ diàn", m: "Physical store", c: "虽然网购流行，但我还是喜欢去实体店试用产品。", t: "leisure" },
+
+        // 教育与学习 (Education) - 紫色系
+        { w: "居家学习", p: "jū jiā xué xí", m: "Home-based learning", c: "在疫情期间，居家学习成了学生的新常态。", t: "education" },
+        { w: "网络视讯", p: "wǎng luò shì xùn", m: "Video conference", c: "通过网络视讯，学生可以远程参加老师的课程。", t: "education" },
+        { w: "教学平台", p: "jiào xué píng tái", m: "Teaching platform", c: "老师在教学平台上上传了复习资料。", t: "education" },
+        { w: "电子教材", p: "diàn zǐ jiào cái", m: "E-textbook", c: "使用电子教材可以减轻学生的书包重量。", t: "education" },
+        { w: "学习应用", p: "xué xí yìng yòng", m: "Learning app", c: "这款学习应用可以帮助我练习听写。", t: "education" },
+        { w: "居家办公", p: "jū jiā bàn gōng", m: "Work from home", c: "居家办公和学习都需要一个安静的环境。", t: "education" },
+        { w: "平板电脑", p: "píng bǎn diàn nǎo", m: "Tablet", c: "平板电脑携带方便，非常适合阅读电子教材。", t: "education" },
+        { w: "浏览", p: "liú lǎn", m: "Browse", c: "我会浏览教育网站来搜索学习资料。", t: "education" }
     ];
+
     let idx = 0, flipped = false, startX = 0;
     const card = document.getElementById('card');
     
     function update() {
         const item = data[idx];
-        document.getElementById('word-front').innerText = item.w;
+        const wordF = document.getElementById('word-front');
+        const vBtn = document.getElementById('v-btn');
+        const catLabel = document.getElementById('category-label');
+        
+        wordF.innerText = item.w;
         document.getElementById('word-back').innerText = item.w;
         document.getElementById('pinyin').innerText = item.p;
         document.getElementById('meaning').innerText = item.m;
         
-        const highlightedText = item.c.replace(item.w, '<span class="text-amber-600 border-b-2 border-amber-200">' + item.w + '</span>');
+        const highlightedText = item.c.replace(item.w, '<span class="border-b-2 font-black">' + item.w + '</span>');
         document.getElementById('collocation').innerHTML = highlightedText;
-        
         document.getElementById('counter').innerText = (idx + 1) + ' / ' + data.length;
+
+        // 更新颜色主题
+        card.className = "card-inner shadow-xl " + "theme-" + item.t;
+        wordF.className = "word-display " + "text-" + item.t;
+        vBtn.className = "voice-btn mb-12 " + "text-" + item.t;
         
+        // 标签更新
+        if(item.t === 'payment') catLabel.innerText = "分类：电子支付";
+        else if(item.t === 'leisure') catLabel.innerText = "分类：娱乐与休闲";
+        else if(item.t === 'education') catLabel.innerText = "分类：教育与学习";
+
         flipped = false;
         document.getElementById('front').classList.remove('hidden');
         document.getElementById('back').classList.add('hidden');
@@ -119,23 +156,28 @@
         document.getElementById('back').classList.toggle('hidden', !flipped);
         card.classList.toggle('card-back-mode', flipped);
     }
+
     function next() { if (idx < data.length - 1) { idx++; update(); } }
     function prev() { if (idx > 0) { idx--; update(); } }
+    
     function playVoice() { 
         const msg = new SpeechSynthesisUtterance(data[idx].w);
         msg.lang = 'zh-CN';
         window.speechSynthesis.speak(msg); 
     }
+
     window.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') next();
         else if (e.key === 'ArrowLeft') prev();
         else if (e.key === ' ') { e.preventDefault(); flip(); }
     });
+
     document.getElementById('app').addEventListener('touchstart', e => startX = e.touches[0].clientX);
     document.getElementById('app').addEventListener('touchend', e => {
         const diff = startX - e.changedTouches[0].clientX;
         if (diff > 80) next(); else if (diff < -80) prev();
     });
+
     update();
 </script>
 </body>
